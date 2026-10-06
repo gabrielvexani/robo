@@ -24,7 +24,7 @@ public class Robo {
 
     void receberDano(int dano) {
 
-        energia = energia - dano;
+        energia -= dano;
 
         if (energia < 0) {
             energia = 0;
@@ -33,7 +33,7 @@ public class Robo {
 
     void recuperarEnergia(int quantidade) {
 
-        energia = energia + quantidade;
+        energia += quantidade;
 
         if (energia > 100) {
             energia = 100;
@@ -54,14 +54,5 @@ public class Robo {
     void registrarEmpate() {
 
         pontos++;
-    }
-
-    boolean estaDisponivel() {
-
-        if (energia >= 30) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

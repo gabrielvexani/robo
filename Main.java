@@ -294,6 +294,67 @@ public class Main {
                     }
                 }
 
+            } else if (opcao == 4) {
+
+                if (robos.isEmpty()) {
+
+                    System.out.println("Nenhum robo cadastrado!");
+
+                } else {
+
+                    int codigo;
+                    int quantidade;
+
+                    System.out.println("Digite o codigo do robo: ");
+                    codigo = e.nextInt();
+
+                    Robo robo = null;
+
+                    for (int i = 0; i < robos.size(); i++) {
+
+                        if (robos.get(i).codigo == codigo) {
+                            robo = robos.get(i);
+                        }
+                    }
+
+                    if (robo == null) {
+
+                        System.out.println("Robo nao encontrado!");
+
+                    } else {
+
+                        System.out.println("Digite a quantidade de energia para recuperar: ");
+                        quantidade = e.nextInt();
+
+                        if (quantidade <= 0 || quantidade % 10 != 0) {
+
+                            System.out.println("A quantidade deve ser positiva e multipla de 10!");
+
+                        } else if (robo.energia + quantidade > 100) {
+
+                            System.out.println("A energia final nao pode ultrapassar 100!");
+
+                        } else {
+
+                            int custo = quantidade / 10;
+
+                            if (robo.pontos < custo) {
+
+                                System.out.println("Pontos insuficientes!");
+
+                            } else {
+
+                                robo.energia += quantidade;
+                                robo.pontos -= custo;
+
+                                System.out.println("Energia recuperada com sucesso!");
+                                System.out.println("Energia atual: " + robo.energia);
+                                System.out.println("Pontos restantes: " + robo.pontos);
+                            }
+                        }
+                    }
+                }
+
             } else if (opcao == 8) {
 
                 System.out.println("Programa encerrado!");
