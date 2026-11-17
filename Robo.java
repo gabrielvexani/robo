@@ -1,4 +1,6 @@
 
+// Classe abstrata que representa os robôs.
+// Encapsulamento: os atributos são privados e acessados por métodos.
 public abstract class Robo {
 
     private int codigo;
@@ -23,6 +25,7 @@ public abstract class Robo {
         pontos = 0;
     }
 
+    // Métodos getters: permitem consultar os atributos privados.
     public int getCodigo() {
         return codigo;
     }
@@ -55,8 +58,10 @@ public abstract class Robo {
         return pontos;
     }
 
+    // Cada subclasse informa seu próprio tipo de robô.
     public abstract String getTipo();
 
+    // Métodos protegidos que podem ser modificados pelas subclasses.
     protected int modificarAtaque() {
         return ataque;
     }
@@ -65,6 +70,8 @@ public abstract class Robo {
         return dano;
     }
 
+    // Polimorfismo: os métodos das subclasses são chamados
+    // dependendo do tipo de robô envolvido no combate.
     public int calcularDano(Robo alvo, int rodada) {
 
         int dano = modificarAtaque() - alvo.getDefesa();

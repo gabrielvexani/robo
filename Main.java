@@ -8,6 +8,8 @@ public class Main {
 
         Scanner e = new Scanner(System.in);
 
+        // ArrayList da classe Robo para armazenar os três tipos de robôs.
+        // Polimorfismo: uma mesma lista recebe objetos de subclasses diferentes.
         ArrayList<Robo> robos = new ArrayList<>();
 
         int opcao = 0;
@@ -111,6 +113,8 @@ public class Main {
                     tipo = e.nextInt();
                 }
 
+                // Herança: cria um objeto de uma das subclasses de Robo.
+                // Polimorfismo: a variável Robo pode receber qualquer uma delas.
                 Robo novoRobo = null;
 
                 if (tipo == 1) {
@@ -146,6 +150,8 @@ public class Main {
 
                         Robo robo = robos.get(i);
 
+                        // Os getters acessam os atributos privados da classe Robo.
+                        // Isso faz parte do encapsulamento.
                         System.out.println("Codigo: " + robo.getCodigo());
                         System.out.println("Nome: " + robo.getNome());
                         System.out.println("Tipo: " + robo.getTipo());
@@ -270,8 +276,11 @@ public class Main {
 
             System.out.println("\n--- Rodada " + rodada + " ---");
 
+            // Polimorfismo: o cálculo do dano utiliza o comportamento
+            // correspondente ao tipo de cada robô.
             int dano = robo1.calcularDano(robo2, rodada);
 
+            // O método receberDano altera a energia do robô.
             robo2.receberDano(dano);
 
             System.out.println(robo1.getNome() + " atacou " + robo2.getNome());
