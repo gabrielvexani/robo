@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -18,9 +19,9 @@ public class Main {
             System.out.println("2 - Listar robos");
             System.out.println("3 - Realizar combate");
             System.out.println("4 - Recuperar energia");
-            System.out.println("5 - Rodada geral");
-            System.out.println("6 - Exibir classificacao");
-            System.out.println("7 - Estatisticas");
+            System.out.println("5 - Realizar rodada geral");
+            System.out.println("6 - Mostrar classificacao");
+            System.out.println("7 - Mostrar estatisticas");
             System.out.println("8 - Sair");
             System.out.println("Escolha uma opcao: ");
 
@@ -33,6 +34,7 @@ public class Main {
                 String nome;
                 int ataque;
                 int defesa;
+                int tipo;
 
                 System.out.println("Digite o codigo do robo: ");
                 codigo = e.nextInt();
@@ -42,7 +44,7 @@ public class Main {
 
                 for (int i = 0; i < robos.size(); i++) {
 
-                    if (robos.get(i).codigo == codigo) {
+                    if (robos.get(i).getCodigo() == codigo) {
                         codigoExiste = true;
                     }
                 }
@@ -62,7 +64,7 @@ public class Main {
 
                     for (int i = 0; i < robos.size(); i++) {
 
-                        if (robos.get(i).codigo == codigo) {
+                        if (robos.get(i).getCodigo() == codigo) {
                             codigoExiste = true;
                         }
                     }
@@ -71,7 +73,7 @@ public class Main {
                 System.out.println("Digite o nome do robo: ");
                 nome = e.nextLine();
 
-                while (nome.isEmpty()) {
+                while (nome.trim().isEmpty()) {
 
                     System.out.println("Nome nao pode ficar vazio!");
                     System.out.println("Digite o nome do robo: ");
@@ -96,11 +98,39 @@ public class Main {
                     defesa = e.nextInt();
                 }
 
-                Robo novoRobo = new Robo(codigo, nome, ataque, defesa);
+                System.out.println("\nEscolha o tipo de robo:");
+                System.out.println("1 - Ofensivo");
+                System.out.println("2 - Defensivo");
+                System.out.println("3 - Equilibrado");
+
+                tipo = e.nextInt();
+
+                while (tipo < 1 || tipo > 3) {
+
+                    System.out.println("Tipo invalido! Escolha entre 1 e 3: ");
+                    tipo = e.nextInt();
+                }
+
+                Robo novoRobo = null;
+
+                if (tipo == 1) {
+
+                    novoRobo = new RoboOfensivo(codigo, nome, ataque, defesa);
+
+                } else if (tipo == 2) {
+
+                    novoRobo = new RoboDefensivo(codigo, nome, ataque, defesa);
+
+                } else if (tipo == 3) {
+
+                    novoRobo = new RoboEquilibrado(codigo, nome, ataque, defesa);
+                }
 
                 robos.add(novoRobo);
 
                 System.out.println("Robo cadastrado com sucesso!");
+
+                e.nextLine();
 
             } else if (opcao == 2) {
 
@@ -116,16 +146,17 @@ public class Main {
 
                         Robo robo = robos.get(i);
 
-                        System.out.println("Codigo: " + robo.codigo);
-                        System.out.println("Nome: " + robo.nome);
-                        System.out.println("Ataque: " + robo.ataque);
-                        System.out.println("Defesa: " + robo.defesa);
-                        System.out.println("Energia: " + robo.energia);
-                        System.out.println("Vitorias: " + robo.vitorias);
-                        System.out.println("Derrotas: " + robo.derrotas);
-                        System.out.println("Pontos: " + robo.pontos);
+                        System.out.println("Codigo: " + robo.getCodigo());
+                        System.out.println("Nome: " + robo.getNome());
+                        System.out.println("Tipo: " + robo.getTipo());
+                        System.out.println("Ataque: " + robo.getAtaque());
+                        System.out.println("Defesa: " + robo.getDefesa());
+                        System.out.println("Energia: " + robo.getEnergia());
+                        System.out.println("Vitorias: " + robo.getVitorias());
+                        System.out.println("Derrotas: " + robo.getDerrotas());
+                        System.out.println("Pontos: " + robo.getPontos());
 
-                        if (robo.energia >= 30) {
+                        if (robo.getEnergia() >= 30) {
                             System.out.println("Situacao: Disponivel");
                         } else {
                             System.out.println("Situacao: Em recuperacao");
@@ -157,11 +188,11 @@ public class Main {
 
                     for (int i = 0; i < robos.size(); i++) {
 
-                        if (robos.get(i).codigo == codigo1) {
+                        if (robos.get(i).getCodigo() == codigo1) {
                             robo1 = robos.get(i);
                         }
 
-                        if (robos.get(i).codigo == codigo2) {
+                        if (robos.get(i).getCodigo() == codigo2) {
                             robo2 = robos.get(i);
                         }
                     }
@@ -174,186 +205,31 @@ public class Main {
 
                         System.out.println("Os robos precisam ser diferentes!");
 
-                    } else if (robo1.energia < 30 || robo2.energia < 30) {
+                    } else if (robo1.getEnergia() < 30 || robo2.getEnergia() < 30) {
 
                         System.out.println("Os dois robos precisam ter pelo menos 30 de energia!");
 
                     } else {
 
-                        Robo primeiro;
-                        Robo segundo;
-
-                        if (robo1.pontos < robo2.pontos) {
-
-                            primeiro = robo1;
-                            segundo = robo2;
-
-                        } else if (robo2.pontos < robo1.pontos) {
-
-                            primeiro = robo2;
-                            segundo = robo1;
-
-                        } else {
-
-                            if (robo1.codigo < robo2.codigo) {
-                                primeiro = robo1;
-                                segundo = robo2;
-                            } else {
-                                primeiro = robo2;
-                                segundo = robo1;
-                            }
-                        }
-
-                        System.out.println("\n===== COMBATE =====");
-                        System.out.println(primeiro.nome + " comeca atacando!");
-
-                        boolean combateTerminou = false;
-
-                        for (int rodada = 1; rodada <= 5 && !combateTerminou; rodada++) {
-
-                            System.out.println("\n--- Rodada " + rodada + " ---");
-
-                            int dano = primeiro.ataque - segundo.defesa;
-
-                            if (dano < 5) {
-                                dano = 5;
-                            }
-
-                            if (rodada % 2 == 0) {
-                                dano += 5;
-                            }
-
-                            segundo.energia -= dano;
-
-                            if (segundo.energia < 0) {
-                                segundo.energia = 0;
-                            }
-
-                            System.out.println(primeiro.nome + " atacou " + segundo.nome);
-                            System.out.println("Dano causado: " + dano);
-                            System.out.println("Energia de " + segundo.nome + ": " + segundo.energia);
-
-                            if (segundo.energia == 0) {
-
-                                System.out.println(segundo.nome + " chegou a 0 de energia!");
-                                combateTerminou = true;
-
-                            } else {
-
-                                int danoSegundo = segundo.ataque - primeiro.defesa;
-
-                                if (danoSegundo < 5) {
-                                    danoSegundo = 5;
-                                }
-
-                                if (rodada % 2 == 0) {
-                                    danoSegundo += 5;
-                                }
-
-                                primeiro.energia -= danoSegundo;
-
-                                if (primeiro.energia < 0) {
-                                    primeiro.energia = 0;
-                                }
-
-                                System.out.println(segundo.nome + " atacou " + primeiro.nome);
-                                System.out.println("Dano causado: " + danoSegundo);
-                                System.out.println("Energia de " + primeiro.nome + ": " + primeiro.energia);
-
-                                if (primeiro.energia == 0) {
-
-                                    System.out.println(primeiro.nome + " chegou a 0 de energia!");
-                                    combateTerminou = true;
-                                }
-                            }
-                        }
-
-                        if (primeiro.energia > segundo.energia) {
-
-                            primeiro.vitorias++;
-                            primeiro.pontos += 3;
-                            segundo.derrotas++;
-
-                            System.out.println("\nVencedor: " + primeiro.nome);
-
-                        } else if (segundo.energia > primeiro.energia) {
-
-                            segundo.vitorias++;
-                            segundo.pontos += 3;
-                            primeiro.derrotas++;
-
-                            System.out.println("\nVencedor: " + segundo.nome);
-
-                        } else {
-
-                            primeiro.pontos++;
-                            segundo.pontos++;
-
-                            System.out.println("\nResultado: EMPATE!");
-                        }
+                        realizarCombate(robo1, robo2);
                     }
                 }
 
             } else if (opcao == 4) {
 
-                if (robos.isEmpty()) {
+                System.out.println("Opcao ainda nao implementada!");
 
-                    System.out.println("Nenhum robo cadastrado!");
+            } else if (opcao == 5) {
 
-                } else {
+                System.out.println("Opcao ainda nao implementada!");
 
-                    int codigo;
-                    int quantidade;
+            } else if (opcao == 6) {
 
-                    System.out.println("Digite o codigo do robo: ");
-                    codigo = e.nextInt();
+                System.out.println("Opcao ainda nao implementada!");
 
-                    Robo robo = null;
+            } else if (opcao == 7) {
 
-                    for (int i = 0; i < robos.size(); i++) {
-
-                        if (robos.get(i).codigo == codigo) {
-                            robo = robos.get(i);
-                        }
-                    }
-
-                    if (robo == null) {
-
-                        System.out.println("Robo nao encontrado!");
-
-                    } else {
-
-                        System.out.println("Digite a quantidade de energia para recuperar: ");
-                        quantidade = e.nextInt();
-
-                        if (quantidade <= 0 || quantidade % 10 != 0) {
-
-                            System.out.println("A quantidade deve ser positiva e multipla de 10!");
-
-                        } else if (robo.energia + quantidade > 100) {
-
-                            System.out.println("A energia final nao pode ultrapassar 100!");
-
-                        } else {
-
-                            int custo = quantidade / 10;
-
-                            if (robo.pontos < custo) {
-
-                                System.out.println("Pontos insuficientes!");
-
-                            } else {
-
-                                robo.energia += quantidade;
-                                robo.pontos -= custo;
-
-                                System.out.println("Energia recuperada com sucesso!");
-                                System.out.println("Energia atual: " + robo.energia);
-                                System.out.println("Pontos restantes: " + robo.pontos);
-                            }
-                        }
-                    }
-                }
+                System.out.println("Opcao ainda nao implementada!");
 
             } else if (opcao == 8) {
 
@@ -361,10 +237,90 @@ public class Main {
 
             } else {
 
-                System.out.println("Opcao ainda nao implementada!");
+                System.out.println("Opcao invalida!");
             }
         }
 
         e.close();
+    }
+
+    public static void realizarCombate(Robo robo1, Robo robo2) {
+
+        // O robo com menos pontos comeca.
+        if (robo1.getPontos() > robo2.getPontos()) {
+
+            Robo auxiliar = robo1;
+            robo1 = robo2;
+            robo2 = auxiliar;
+
+        } else if (robo1.getPontos() == robo2.getPontos() &&
+                   robo1.getCodigo() > robo2.getCodigo()) {
+
+            Robo auxiliar = robo1;
+            robo1 = robo2;
+            robo2 = auxiliar;
+        }
+
+        System.out.println("\n===== COMBATE =====");
+        System.out.println(robo1.getNome() + " comeca atacando!");
+
+        boolean combateTerminou = false;
+
+        for (int rodada = 1; rodada <= 5 && !combateTerminou; rodada++) {
+
+            System.out.println("\n--- Rodada " + rodada + " ---");
+
+            int dano = robo1.calcularDano(robo2, rodada);
+
+            robo2.receberDano(dano);
+
+            System.out.println(robo1.getNome() + " atacou " + robo2.getNome());
+            System.out.println("Dano causado: " + dano);
+            System.out.println("Energia de " + robo2.getNome() + ": " + robo2.getEnergia());
+
+            if (robo2.getEnergia() == 0) {
+
+                System.out.println(robo2.getNome() + " chegou a 0 de energia!");
+                combateTerminou = true;
+
+            } else {
+
+                int danoSegundo = robo2.calcularDano(robo1, rodada);
+
+                robo1.receberDano(danoSegundo);
+
+                System.out.println(robo2.getNome() + " atacou " + robo1.getNome());
+                System.out.println("Dano causado: " + danoSegundo);
+                System.out.println("Energia de " + robo1.getNome() + ": " + robo1.getEnergia());
+
+                if (robo1.getEnergia() == 0) {
+
+                    System.out.println(robo1.getNome() + " chegou a 0 de energia!");
+                    combateTerminou = true;
+                }
+            }
+        }
+
+        if (robo1.getEnergia() > robo2.getEnergia()) {
+
+            robo1.registrarVitoria();
+            robo2.registrarDerrota();
+
+            System.out.println("\nVencedor: " + robo1.getNome());
+
+        } else if (robo2.getEnergia() > robo1.getEnergia()) {
+
+            robo2.registrarVitoria();
+            robo1.registrarDerrota();
+
+            System.out.println("\nVencedor: " + robo2.getNome());
+
+        } else {
+
+            robo1.registrarEmpate();
+            robo2.registrarEmpate();
+
+            System.out.println("\nResultado: EMPATE!");
+        }
     }
 }

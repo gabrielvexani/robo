@@ -1,13 +1,14 @@
-public class Robo {
 
-    int codigo;
-    String nome;
-    int ataque;
-    int defesa;
-    int energia;
-    int vitorias;
-    int derrotas;
-    int pontos;
+public abstract class Robo {
+
+    private int codigo;
+    private String nome;
+    private int ataque;
+    private int defesa;
+    private int energia;
+    private int vitorias;
+    private int derrotas;
+    private int pontos;
 
     public Robo(int codigo, String nome, int ataque, int defesa) {
 
@@ -22,7 +23,66 @@ public class Robo {
         pontos = 0;
     }
 
-    void receberDano(int dano) {
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public int getAtaque() {
+        return ataque;
+    }
+
+    public int getDefesa() {
+        return defesa;
+    }
+
+    public int getEnergia() {
+        return energia;
+    }
+
+    public int getVitorias() {
+        return vitorias;
+    }
+
+    public int getDerrotas() {
+        return derrotas;
+    }
+
+    public int getPontos() {
+        return pontos;
+    }
+
+    public abstract String getTipo();
+
+    protected int modificarAtaque() {
+        return ataque;
+    }
+
+    protected int reduzirDanoRecebido(int dano) {
+        return dano;
+    }
+
+    public int calcularDano(Robo alvo, int rodada) {
+
+        int dano = modificarAtaque() - alvo.getDefesa();
+
+        if (dano < 5) {
+            dano = 5;
+        }
+
+        if (rodada % 2 == 0) {
+            dano += 5;
+        }
+
+        dano = alvo.reduzirDanoRecebido(dano);
+
+        return dano;
+    }
+
+    public void receberDano(int dano) {
 
         energia -= dano;
 
@@ -31,28 +91,16 @@ public class Robo {
         }
     }
 
-    void recuperarEnergia(int quantidade) {
-
-        energia += quantidade;
-
-        if (energia > 100) {
-            energia = 100;
-        }
-    }
-
-    void registrarVitoria() {
-
+    public void registrarVitoria() {
         vitorias++;
         pontos += 3;
     }
 
-    void registrarDerrota() {
-
+    public void registrarDerrota() {
         derrotas++;
     }
 
-    void registrarEmpate() {
-
+    public void registrarEmpate() {
         pontos++;
     }
 }
